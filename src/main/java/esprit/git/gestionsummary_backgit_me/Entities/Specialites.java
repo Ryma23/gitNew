@@ -4,5 +4,6 @@ public enum Specialites {
     GL,
     IA,
     DS,
-    IOT
+    IOT,
+    TRANC_COMMUN
 }

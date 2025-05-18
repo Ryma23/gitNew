@@ -1,0 +1,113 @@
+<div class="container">
+  <div class="header">
+    <h1>Gestion des Spécialités</h1>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="addSpecialite()">
+        <mat-icon>add</mat-icon>
+        Ajouter une spécialité
+      </button>
+      <button mat-raised-button color="accent" (click)="exportToExcel()">
+        <mat-icon>download</mat-icon>
+        Exporter
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Liste des spécialités</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field class="search-field">
+          <mat-label>Rechercher</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Informatique" #input>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <div class="table-container">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+              <td mat-cell *matCellDef="let row">{{row.id}}</td>
+            </ng-container>
+
+            <!-- Nom Column -->
+            <ng-container matColumnDef="nom">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+              <td mat-cell *matCellDef="let row">{{row.nom}}</td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button color="primary" (click)="editSpecialite(row)" matTooltip="Modifier">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteSpecialite(row)" matTooltip="Supprimer">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            [length]="totalItems"
+            [pageSize]="pageSize"
+            [pageIndex]="currentPage"
+            (page)="onPageChange($event)"
+            aria-label="Sélectionner la page">
+          </mat-paginator>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div *ngIf="selectedSpecialite" class="details-section">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Niveaux de {{selectedSpecialite.nom}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngIf="loading" class="loading-container">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div>
+          <div *ngIf="error" class="error-container">
+            {{error}}
+          </div>
+          <div *ngIf="!loading && !error" class="niveaux-list">
+            <div *ngFor="let niveau of niveaux" class="niveau-item" (click)="onNiveauSelect(niveau)">
+              <span class="niveau-annee">{{niveau.annee}}</span>
+              <span class="niveau-classes">{{niveau.classes?.length || 0}} classes</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card *ngIf="selectedNiveau">
+        <mat-card-header>
+          <mat-card-title>Classes de {{selectedNiveau.annee}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngIf="loading" class="loading-container">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div>
+          <div *ngIf="error" class="error-container">
+            {{error}}
+          </div>
+          <div *ngIf="!loading && !error" class="classes-list">
+            <div *ngFor="let classe of classes" class="classe-item" [routerLink]="['/classes', classe.id]">
+              <span class="classe-number">Classe {{classe.number}}</span>
+              <span class="classe-capacity">{{classe.capacity}} places</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,105 @@
+<div class="container" *ngIf="!loading">
+  <div class="header">
+    <h1>Classe {{classe?.number}}</h1>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="exportEleves()">
+        <mat-icon>download</mat-icon>
+        Exporter élèves
+      </button>
+      <button mat-raised-button color="primary" (click)="exportRepos()">
+        <mat-icon>download</mat-icon>
+        Exporter repos
+      </button>
+      <button mat-raised-button color="primary" (click)="exportPresence()">
+        <mat-icon>download</mat-icon>
+        Exporter présence
+      </button>
+      <button mat-raised-button color="accent" (click)="showStats()">
+        <mat-icon>analytics</mat-icon>
+        Statistiques
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Section Élèves -->
+    <mat-card class="section">
+      <mat-card-header>
+        <mat-card-title>Élèves</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="eleves" class="mat-elevation-z2">
+          <!-- Colonne Nom -->
+          <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef>Nom</th>
+            <td mat-cell *matCellDef="let eleve">{{eleve.nom}}</td>
+          </ng-container>
+
+          <!-- Colonne Prénom -->
+          <ng-container matColumnDef="prenom">
+            <th mat-header-cell *matHeaderCellDef>Prénom</th>
+            <td mat-cell *matCellDef="let eleve">{{eleve.prenom}}</td>
+          </ng-container>
+
+          <!-- Colonne Email -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let eleve">{{eleve.email}}</td>
+          </ng-container>
+
+          <!-- Colonne Numéro Étudiant -->
+          <ng-container matColumnDef="numeroEtudiant">
+            <th mat-header-cell *matHeaderCellDef>Numéro Étudiant</th>
+            <td mat-cell *matCellDef="let eleve">{{eleve.numeroEtudiant}}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['nom', 'prenom', 'email', 'numeroEtudiant']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['nom', 'prenom', 'email', 'numeroEtudiant'];"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Section Repos -->
+    <mat-card class="section">
+      <mat-card-header>
+        <mat-card-title>Repos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="repos" class="mat-elevation-z2">
+          <!-- Colonne Date -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let repos">{{repos.date | date:'dd/MM/yyyy'}}</td>
+          </ng-container>
+
+          <!-- Colonne Motif -->
+          <ng-container matColumnDef="motif">
+            <th mat-header-cell *matHeaderCellDef>Motif</th>
+            <td mat-cell *matCellDef="let repos">{{repos.motif}}</td>
+          </ng-container>
+
+          <!-- Colonne Élève -->
+          <ng-container matColumnDef="eleve">
+            <th mat-header-cell *matHeaderCellDef>Élève</th>
+            <td mat-cell *matCellDef="let repos">{{repos.eleve?.nom}} {{repos.eleve?.prenom}}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['date', 'motif', 'eleve']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['date', 'motif', 'eleve'];"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div class="loading-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="error-container" *ngIf="error">
+  <mat-card class="error-card">
+    <mat-card-content>
+      <p>{{error}}</p>
+    </mat-card-content>
+  </mat-card>
+</div> 

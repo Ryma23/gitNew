@@ -9,5 +9,4 @@ public class GestionSummaryBackGitMeApplication {
     public static void main(String[] args) {
         SpringApplication.run(GestionSummaryBackGitMeApplication.class, args);
     }
-
 }

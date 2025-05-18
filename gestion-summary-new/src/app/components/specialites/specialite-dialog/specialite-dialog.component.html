@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier' : 'Ajouter' }} une spécialité</h2>
+
+<form [formGroup]="specialiteForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="nom" required>
+      <mat-error *ngIf="specialiteForm.get('nom')?.hasError('required')">
+        Le nom est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Spécialités</mat-label>
+      <mat-select formControlName="specialites" required>
+        <mat-option [value]="Specialites.GL">Génie Logiciel</mat-option>
+        <mat-option [value]="Specialites.IA">Intelligence Artificielle</mat-option>
+        <mat-option [value]="Specialites.DS">Data Science</mat-option>
+        <mat-option [value]="Specialites.IOT">Internet of Things</mat-option>
+        <mat-option [value]="Specialites.TRANC_COMMUN">Tronc Commun</mat-option>
+      </mat-select>
+      <mat-error *ngIf="specialiteForm.get('specialites')?.hasError('required')">
+        Les spécialités sont requises
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Type de Formation</mat-label>
+      <mat-select formControlName="typeFormation" required>
+        <mat-option [value]="TypeFormation.ALTERNANT">Alternant</mat-option>
+        <mat-option [value]="TypeFormation.COURS_DU_JOUR">Cours du jour</mat-option>
+        <mat-option [value]="TypeFormation.COURS_DU_SOIR">Cours du soir</mat-option>
+      </mat-select>
+      <mat-error *ngIf="specialiteForm.get('typeFormation')?.hasError('required')">
+        Le type de formation est requis
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!specialiteForm.valid">
+      {{ isEditMode ? 'Modifier' : 'Ajouter' }}
+    </button>
+  </mat-dialog-actions>
+</form> 

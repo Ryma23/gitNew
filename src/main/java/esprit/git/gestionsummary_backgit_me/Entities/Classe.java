@@ -1,32 +1,43 @@
 package esprit.git.gestionsummary_backgit_me.Entities;
 
 import jakarta.persistence.*;
-import jakarta.websocket.server.ServerEndpoint;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Classe {
-    @ManyToOne
-    Niveau niveau;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    int number;
+    private Long id;
 
-    public int getNumber() {
-        return number;
-    }
+    @Column(nullable = false)
+    private String number;
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
+    @Column(nullable = false)
+    private int capacity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "niveau_id", nullable = false)
+    @JsonBackReference
+    private Niveau niveau;
+
+    @OneToMany(mappedBy = "classe")
+    @JsonManagedReference
+    private List<Eleve> eleves;
+
+    @OneToMany(mappedBy = "classe")
+    @JsonManagedReference
+    private List<Repos> repos;
 
     public Long getId() {
         return id;
@@ -34,5 +45,45 @@ public class Classe {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public Niveau getNiveau() {
+        return niveau;
+    }
+
+    public void setNiveau(Niveau niveau) {
+        this.niveau = niveau;
+    }
+
+    public List<Eleve> getEleves() {
+        return eleves;
+    }
+
+    public void setEleves(List<Eleve> eleves) {
+        this.eleves = eleves;
+    }
+
+    public List<Repos> getRepos() {
+        return repos;
+    }
+
+    public void setRepos(List<Repos> repos) {
+        this.repos = repos;
     }
 }
